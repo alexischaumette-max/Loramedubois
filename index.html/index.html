@@ -544,18 +544,28 @@
             </div>
         </section>
 
-        <!-- Contact Direct (Web3Forms) -->
+        <!-- Contact Direct (Web3Forms & Coordonnées Directes) -->
         <section id="contact" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
             <div class="bg-wood-900/30 border border-wood-800/80 rounded-2xl p-8 space-y-8">
-                <div class="text-center space-y-3">
+                <div class="text-center space-y-4">
                     <h3 class="serif-title text-2xl font-bold text-wood-100">Une question avant d'acheter ?</h3>
                     <p class="text-xs text-wood-300 max-w-lg mx-auto">
-                        Envoyez-moi un message direct ci-dessous ou contactez-moi par vos applications habituelles.
+                        Envoyez-moi un message direct ci-dessous ou contactez-moi directement par e-mail ou WhatsApp.
                     </p>
+                    
+                    <!-- Coordonnées directes (Email & WhatsApp) -->
+                    <div class="flex flex-wrap justify-center items-center gap-3 pt-2">
+                        <a href="mailto:loramedubois@gmail.com" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-wood-950 border border-wood-800 text-xs text-wood-200 hover:text-amber-400 transition shadow">
+                            <span>✉️</span> loramedubois@gmail.com
+                        </a>
+                        <a href="https://wa.me/33672290105" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-950/60 border border-emerald-800/60 text-xs text-emerald-200 hover:bg-emerald-900/60 transition shadow">
+                            <span>💬</span> WhatsApp : 06 72 29 01 05
+                        </a>
+                    </div>
                 </div>
 
-                <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4 max-w-xl mx-auto text-left">
-                    <!-- Remplacez VOTRE_ACCESS_KEY_ICI par votre clé Web3Forms -->
+                <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4 max-w-xl mx-auto text-left pt-4 border-t border-wood-800/50">
+                    <!-- Clé d'accès Web3Forms intégrée -->
                     <input type="hidden" name="access_key" value="c9048a4f-7cfb-4966-b66c-99081a713b60">
 
                     <div class="grid sm:grid-cols-2 gap-4">
