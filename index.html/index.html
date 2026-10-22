@@ -544,7 +544,7 @@
             </div>
         </section>
 
-        <!-- Contact Direct -->
+        <!-- Contact Direct (Web3Forms) -->
         <section id="contact" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
             <div class="bg-wood-900/30 border border-wood-800/80 rounded-2xl p-8 space-y-8">
                 <div class="text-center space-y-3">
@@ -554,28 +554,29 @@
                     </p>
                 </div>
 
-                <form id="contactForm" class="space-y-4 max-w-xl mx-auto text-left">
+                <form action="https://api.web3forms.com/submit" method="POST" class="space-y-4 max-w-xl mx-auto text-left">
+                    <!-- Remplacez VOTRE_ACCESS_KEY_ICI par votre clé Web3Forms -->
+                    <input type="hidden" name="access_key" value="c9048a4f-7cfb-4966-b66c-99081a713b60">
+
                     <div class="grid sm:grid-cols-2 gap-4">
                         <div>
                             <label for="contactName" class="block text-xs font-medium text-wood-300 mb-1">Votre Nom / Prénom</label>
-                            <input type="text" id="contactName" required placeholder="Ex: Jean Dupont" class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition">
+                            <input type="text" name="name" id="contactName" required placeholder="Ex: Jean Dupont" class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition">
                         </div>
                         <div>
                             <label for="contactEmail" class="block text-xs font-medium text-wood-300 mb-1">Votre Adresse E-mail</label>
-                            <input type="email" id="contactEmail" required placeholder="nom@exemple.com" class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition">
+                            <input type="email" name="email" id="contactEmail" required placeholder="nom@exemple.com" class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition">
                         </div>
                     </div>
                     <div>
                         <label for="contactMessage" class="block text-xs font-medium text-wood-300 mb-1">Votre Message</label>
-                        <textarea id="contactMessage" rows="4" required placeholder="Bonjour..." class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition"></textarea>
+                        <textarea name="message" id="contactMessage" rows="4" required placeholder="Bonjour..." class="w-full px-4 py-2.5 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white placeholder-wood-600 focus:outline-none focus:border-amber-500 transition"></textarea>
                     </div>
                     <div class="text-center pt-2">
                         <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-amber-600 to-wood-600 hover:from-amber-500 hover:to-wood-500 text-white font-semibold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2 mx-auto">
                             Envoyer le message
                         </button>
                     </div>
-                    <!-- Message de confirmation JS -->
-                    <div id="contactStatus" class="hidden text-center text-xs p-3 rounded-xl bg-amber-900/40 border border-amber-500/50 text-amber-200 mt-2"></div>
                 </form>
             </div>
         </section>
@@ -702,7 +703,7 @@
         </div>
     </footer>
 
-    <!-- Script principal Firebase -->
+    <!-- Script principal Firebase (Produits, Audio, Avis) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1066,34 +1067,6 @@
                 await deleteDoc(doc(db, "reviews", id));
             }
         };
-
-        // Envoi direct du message de contact dans Firebase Firestore
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const statusDiv = document.getElementById('contactStatus');
-                const name = document.getElementById('contactName').value;
-                const email = document.getElementById('contactEmail').value;
-                const message = document.getElementById('contactMessage').value;
-
-                statusDiv.classList.remove('hidden');
-                statusDiv.innerText = "Envoi de votre message en cours...";
-
-                try {
-                    await addDoc(collection(db, "messages"), {
-                        name: name,
-                        email: email,
-                        message: message,
-                        createdAt: new Date()
-                    });
-                    statusDiv.innerText = "Merci ! Votre message a bien été envoyé. Je vous répondrai dans les plus brefs délais.";
-                    contactForm.reset();
-                } catch (error) {
-                    statusDiv.innerText = "Erreur lors de l'envoi du message : " + error.message;
-                }
-            });
-        }
 
         window.closeModal = (modalId) => {
             document.getElementById(modalId).classList.add('hidden');
