@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flûtes Artisanales Amérindiennes | Créations Fait Main</title>
+    <title>Flûtes Artisanales de Style Amérindiennes | Créations Fait Main</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,7 +96,7 @@
                     </span>
                 </h1>
                 <p class="max-w-2xl mx-auto text-base sm:text-lg text-wood-300 font-light leading-relaxed">
-                    Des flûtes amérindiennes d'exception façonnées à la main avec passion. Une sonorité profonde et intuitive accessible à tous, même sans connaissances musicales.
+                    Des flûtes de style amérindiennes d'exception façonnées à la main avec passion. Une sonorité profonde et intuitive accessible à tous, même sans connaissances musicales.
                 </p>
 
                 <div class="pt-4 flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -598,7 +598,7 @@
             <button onclick="closeCheckout()" class="absolute top-4 right-4 text-wood-400 hover:text-white transition">✕</button>
             <div class="space-y-2">
                 <span class="text-[10px] font-semibold text-amber-400 uppercase tracking-wider">Commande Directe</span>
-                <h3 id="modal-product-title" class="serif-title text-xl font-bold text-wood-100">Flûte Amérindienne</h3>
+                <h3 id="modal-product-title" class="serif-title text-xl font-bold text-wood-100">Flûte de Style Amérindienne</h3>
                 <p class="text-xs text-wood-400">Réglez en toute sécurité via le lien officiel de mon compte bancaire commercial.</p>
             </div>
             <div class="bg-wood-950 p-4 rounded-xl border border-wood-800 flex justify-between items-center">
@@ -704,7 +704,7 @@
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
             <div>
                 <span class="serif-title text-sm font-bold text-wood-200 uppercase">L'or et l'âme du bois</span>
-                <p class="text-[11px] mt-1">Atelier de création artisanale de flûtes amérindiennes.</p>
+                <p class="text-[11px] mt-1">Atelier de création artisanale de flûtes style amérindiennes.</p>
             </div>
             <div>
                 <p class="text-[11px]">SIRET : <span class="text-wood-300">399 121 763 00029</span></p>
@@ -811,7 +811,7 @@
             renderPreviews();
         };
 
-        // Gestion Audio avec Firebase Storage
+        // Gestion Audio avec Firebase Storage (Corrigé)
         window.openAudioModal = () => {
             document.getElementById('audioForm').reset();
             document.getElementById('audioModal').classList.remove('hidden');
@@ -833,16 +833,14 @@
             try {
                 alert("Téléversement du fichier audio en cours, veuillez patienter...");
                 
-                // Crée un chemin unique dans Firebase Storage
+                // Enregistre le fichier brut dans Firebase Storage
                 const fileRef = storageRef(storage, `audios/${Date.now()}_${audioFile.name}`);
-                
-                // Envoie le fichier audio brut dans Storage
                 await uploadBytes(fileRef, audioFile);
                 
                 // Récupère l'URL publique de téléchargement
                 const downloadUrl = await getDownloadURL(fileRef);
                 
-                // Enregistre les métadonnées et l'URL dans Firestore
+                // Enregistre l'URL et les métadonnées dans Firestore (taille légère, plus d'erreur !)
                 await addDoc(collection(db, "audio_tracks"), {
                     title: title,
                     meta: meta,
@@ -1112,7 +1110,7 @@
             document.getElementById('modal-product-title').innerText = productTitle;
             document.getElementById('modal-product-price').innerText = price + ' €';
             document.getElementById('bank-payment-link').setAttribute('href', customLink || 'https://stripe.com');
-            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('checkout-modal').classList.add('hidden');
         };
 
         window.closeCheckout = function() {
