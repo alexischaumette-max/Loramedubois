@@ -718,6 +718,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCfnxPtbIsl809xlLZaxzK2W3dL4iREFK0",
@@ -732,6 +733,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const storage = getStorage(app);
 
         let currentUser = null;
         let uploadedImages = [];
@@ -809,7 +811,7 @@
             renderPreviews();
         };
 
-        // Gestion Audio
+        // Gestion Audio avec Firebase Storage
         window.openAudioModal = () => {
             document.getElementById('audioForm').reset();
             document.getElementById('audioModal').classList.remove('hidden');
@@ -827,22 +829,33 @@
             }
 
             const audioFile = audioFileInput.files[0];
-            const reader = new FileReader();
-            reader.readAsDataURL(audioFile);
-            reader.onload = async () => {
-                try {
-                    await addDoc(collection(db, "audio_tracks"), {
-                        title: title,
-                        meta: meta,
-                        audioUrl: reader.result,
-                        createdAt: new Date()
-                    });
-                    closeModal('audioModal');
-                    alert("Extrait audio importé avec succès !");
-                } catch (err) {
-                    alert("Erreur lors de l'enregistrement : " + err.message);
-                }
-            };
+
+            try {
+                alert("Téléversement du fichier audio en cours, veuillez patienter...");
+                
+                // Crée un chemin unique dans Firebase Storage
+                const fileRef = storageRef(storage, `audios/${Date.now()}_${audioFile.name}`);
+                
+                // Envoie le fichier audio brut dans Storage
+                await uploadBytes(fileRef, audioFile);
+                
+                // Récupère l'URL publique de téléchargement
+                const downloadUrl = await getDownloadURL(fileRef);
+                
+                // Enregistre les métadonnées et l'URL dans Firestore
+                await addDoc(collection(db, "audio_tracks"), {
+                    title: title,
+                    meta: meta,
+                    audioUrl: downloadUrl,
+                    createdAt: new Date()
+                });
+                
+                closeModal('audioModal');
+                document.getElementById('audioForm').reset();
+                alert("Extrait audio importé et publié avec succès !");
+            } catch (err) {
+                alert("Erreur lors de l'enregistrement : " + err.message);
+            }
         });
 
         function loadAudioTracks() {
