@@ -435,10 +435,10 @@
             <div id="adminAudioBar" class="hidden mb-8 p-4 rounded-2xl bg-wood-900/60 border border-amber-500/40 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div>
                     <span class="text-xs font-semibold text-amber-400 uppercase tracking-wider block">Gestionnaire Audio</span>
-                    <p class="text-xs text-wood-300">Importez vos fichiers MP3 ou WAV pour les publier instantanément.</p>
+                    <p class="text-xs text-wood-300">Ajoutez vos liens d'extraits audio (Archive.org ou autre).</p>
                 </div>
                 <button onclick="openAudioModal()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs shadow transition">
-                    + Importer un fichier audio
+                    + Ajouter un extrait audio
                 </button>
             </div>
 
@@ -674,11 +674,11 @@
         </div>
     </div>
 
-    <!-- Modal Ajout Audio -->
+    <!-- Modal Ajout Audio (Modifié pour accepter les URLs directes) -->
     <div id="audioModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
         <div class="bg-[#1e1815] border border-wood-700/60 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl relative">
             <button onclick="closeModal('audioModal')" class="absolute top-4 right-4 text-wood-400 hover:text-white transition">✕</button>
-            <h3 class="serif-title text-xl font-bold text-wood-100">Importer un extrait audio</h3>
+            <h3 class="serif-title text-xl font-bold text-wood-100">Ajouter un extrait audio</h3>
             <form id="audioForm" class="space-y-3">
                 <div>
                     <label for="audioTitle" class="block text-xs font-medium text-wood-300 mb-1">Titre de l'extrait</label>
@@ -689,8 +689,8 @@
                     <input type="text" id="audioMeta" required placeholder="Ex: Fréquence 440 Hz • Bois tendre" class="w-full px-3 py-2 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <div>
-                    <label for="audioFileInput" class="block text-xs font-medium text-wood-300 mb-1">Fichier Audio (MP3 ou WAV)</label>
-                    <input type="file" id="audioFileInput" accept="audio/mp3, audio/wav, audio/*" required class="w-full px-3 py-2 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white cursor-pointer">
+                    <label for="audioUrlInput" class="block text-xs font-medium text-wood-300 mb-1">Lien direct du fichier audio (URL Archive.org)</label>
+                    <input type="url" id="audioUrlInput" required placeholder="https://archive.org/download/.../mon-fichier.mp3" class="w-full px-3 py-2 rounded-xl bg-wood-950 border border-wood-800 text-xs text-white focus:outline-none focus:border-amber-500">
                 </div>
                 <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs shadow transition">
                     Enregistrer et publier l'extrait
@@ -718,7 +718,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCfnxPtbIsl809xlLZaxzK2W3dL4iREFK0",
@@ -733,7 +732,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         let currentUser = null;
         let uploadedImages = [];
@@ -811,7 +809,7 @@
             renderPreviews();
         };
 
-        // Gestion Audio avec Firebase Storage (Corrigé)
+        // Gestion Audio via URL directe (Archive.org)
         window.openAudioModal = () => {
             document.getElementById('audioForm').reset();
             document.getElementById('audioModal').classList.remove('hidden');
@@ -821,36 +819,18 @@
             e.preventDefault();
             const title = document.getElementById('audioTitle').value;
             const meta = document.getElementById('audioMeta').value;
-            const audioFileInput = document.getElementById('audioFileInput');
-
-            if(audioFileInput.files.length === 0) {
-                alert("Veuillez sélectionner un fichier audio.");
-                return;
-            }
-
-            const audioFile = audioFileInput.files[0];
+            const audioUrl = document.getElementById('audioUrlInput').value;
 
             try {
-                alert("Téléversement du fichier audio en cours, veuillez patienter...");
-                
-                // Enregistre le fichier brut dans Firebase Storage
-                const fileRef = storageRef(storage, `audios/${Date.now()}_${audioFile.name}`);
-                await uploadBytes(fileRef, audioFile);
-                
-                // Récupère l'URL publique de téléchargement
-                const downloadUrl = await getDownloadURL(fileRef);
-                
-                // Enregistre l'URL et les métadonnées dans Firestore (taille légère, plus d'erreur !)
                 await addDoc(collection(db, "audio_tracks"), {
                     title: title,
                     meta: meta,
-                    audioUrl: downloadUrl,
+                    audioUrl: audioUrl,
                     createdAt: new Date()
                 });
-                
                 closeModal('audioModal');
                 document.getElementById('audioForm').reset();
-                alert("Extrait audio importé et publié avec succès !");
+                alert("Extrait audio enregistré avec succès !");
             } catch (err) {
                 alert("Erreur lors de l'enregistrement : " + err.message);
             }
@@ -863,7 +843,7 @@
                 grid.innerHTML = '';
 
                 if (snapshot.empty) {
-                    grid.innerHTML = '<p class="col-span-full text-center text-wood-400 py-6">Aucun extrait audio pour le moment. Connectez-vous en admin pour en importer.</p>';
+                    grid.innerHTML = '<p class="col-span-full text-center text-wood-400 py-6">Aucun extrait audio pour le moment. Connectez-vous en admin pour en ajouter.</p>';
                     return;
                 }
 
