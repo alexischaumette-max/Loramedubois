@@ -213,7 +213,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         </div>
                         <div>
-                            <p class="text-xs font-semibold text-wood-200">Envoi Protégé</p>
+                            <p class="text-xs font-semibold text-wood-200">Colissimo suivi</p>
                             <p class="text-[11px] text-wood-400">Colis renforcé</p>
                         </div>
                     </div>
@@ -934,10 +934,11 @@
                         <span class="text-wood-400">Référence</span><strong id="okRef" class="text-amber-300 font-mono text-sm"></strong><button type="button" data-copy="okRef" class="text-[10px] px-2 py-1 rounded bg-wood-800 hover:bg-wood-700">Copier</button>
                     </div>
                 </div>
+                <p id="okShippingWait" class="hidden text-[11px] text-amber-200 bg-amber-500/10 border border-amber-500/30 rounded-lg p-2">⏳ Les frais de port vont vous être confirmés par e-mail : attendez ce message pour virer le <strong>montant total</strong>.</p>
                 <ul class="text-[11px] text-wood-300 list-disc pl-5 space-y-1">
                     <li><strong>Indiquez impérativement la référence</strong> dans le libellé du virement.</li>
                     <li>Le virement instantané est conseillé : la flûte part plus vite.</li>
-                    <li>Une confirmation de commande vous sera envoyée par e-mail à <strong id="okEmail"></strong>.</li>
+                    <li>Une confirmation de commande <span id="okMailState">vous sera envoyée</span> par e-mail à <strong id="okEmail"></strong>.</li>
                     <li>Je ne vous demanderai jamais de payer par un autre moyen ou vers un autre compte.</li>
                 </ul>
                 <div class="flex gap-2">
@@ -1093,13 +1094,13 @@
 
                 <p><strong class="text-wood-100">2. Produits.</strong> Les flûtes sont des pièces uniques fabriquées à la main ; leurs caractéristiques essentielles (essence, tonalité, accordage, dimensions) figurent sur leur fiche. Le veinage et la teinte du bois peuvent varier légèrement par rapport aux photos. Les pièces sur-mesure font l'objet d'un devis préalable par e-mail.</p>
 
-                <p><strong class="text-wood-100">3. Prix.</strong> Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, article 293 B du CGI. Livraison : offerte en France métropolitaine (colis suivi) ; autres destinations sur devis avant commande.</p>
+                <p><strong class="text-wood-100">3. Prix et frais de livraison.</strong> Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, article 293 B du CGI. Les frais de livraison s'ajoutent au prix de la flûte : envoi en Colissimo avec suivi ; leur montant est indiqué au client lors de la commande, avant tout paiement. Livraison hors France métropolitaine : sur devis préalable.</p>
 
                 <p><strong class="text-wood-100">4. Commande.</strong> Le client remplit le formulaire de commande, accepte les CGV, puis valide en cliquant sur « Commander avec obligation de paiement ». Le contrat est alors conclu. Une confirmation reprenant le détail de la commande est adressée au client par e-mail.</p>
 
                 <p><strong class="text-wood-100">5. Paiement par virement et réservation.</strong> Le paiement s'effectue exclusivement par virement bancaire, sur le compte affiché après la commande, en indiquant la référence fournie. La flûte est réservée au client pendant 4 jours (96 heures) à compter de la commande. À défaut de réception du virement dans ce délai, la commande est annulée automatiquement, sans frais, et la flûte est remise en vente. Le vendeur ne demandera jamais de paiement par un autre moyen ni vers un autre compte.</p>
 
-                <p><strong class="text-wood-100">6. Livraison.</strong> La flûte est expédiée en colis renforcé et suivi sous 5 jours ouvrés après réception du virement, à l'adresse indiquée lors de la commande, et en tout état de cause au plus tard 30 jours après la commande. Le délai de fabrication d'une pièce sur-mesure est précisé dans le devis. Le risque de perte ou d'endommagement est transféré au client lorsqu'il prend physiquement possession du bien.</p>
+                <p><strong class="text-wood-100">6. Livraison.</strong> La flûte est expédiée en Colissimo avec suivi, dans un colis renforcé, sous 5 jours ouvrés après réception du virement, à l'adresse indiquée lors de la commande, et en tout état de cause au plus tard 30 jours après la commande. Le délai de fabrication d'une pièce sur-mesure est précisé dans le devis. Le risque de perte ou d'endommagement est transféré au client lorsqu'il prend physiquement possession du bien.</p>
 
                 <p><strong class="text-wood-100">7. Droit de rétractation.</strong> Le client dispose de 14 jours à compter de la réception de la flûte pour se rétracter, sans avoir à se justifier, au moyen de la fonction « Renoncer au contrat ici » en bas de chaque page du site, par e-mail, ou à l'aide du formulaire ci-dessous. Un accusé de réception lui est adressé par e-mail. La flûte doit être renvoyée en bon état, dans son emballage, au plus tard 14 jours après la rétractation ; les frais de retour sont à la charge du client. Le vendeur rembourse la totalité des sommes versées, frais de livraison initiaux compris, par virement, dans les 14 jours suivant la rétractation ; il peut différer le remboursement jusqu'à réception du bien ou de la preuve de son expédition. Conformément à l'article L221-28 du Code de la consommation, le droit de rétractation ne s'applique pas aux biens confectionnés selon les spécifications du client ou nettement personnalisés (pièces sur-mesure).</p>
                 <div class="bg-wood-950 border border-wood-800 rounded-xl p-4 text-[11px] space-y-1">
@@ -1169,6 +1170,9 @@
             </div>
         </div>
     </footer>
+
+    <!-- EmailJS : envoi de l'e-mail de confirmation au client -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <!-- Routeur : une section = une page -->
     <script>
@@ -1241,10 +1245,17 @@
             bic: 'CRLYFRPP',                                       // ton BIC
             email: 'loramedubois@gmail.com',
             reservationHours: 96,                                  // durée de réservation : 4 jours
-            shippingNote: 'Livraison offerte en France métropolitaine (colis suivi).',
+            shippingCost: null,                                    // FORFAIT de port en euros, ex : 12.5  (null = montant communiqué par e-mail)
+            shippingLabel: 'Colissimo avec suivi',
             vatNote: 'TVA non applicable, art. 293 B du CGI.'
         };
         const WEB3FORMS_KEY = 'c9048a4f-7cfb-4966-b66c-99081a713b60';
+        // E-mail de confirmation automatique au client (EmailJS) : laisser vide pour désactiver
+        const EMAILJS = {
+            publicKey: '',     // EmailJS > Account > Public Key
+            serviceId: '',     // EmailJS > Email Services > Service ID (ex : service_xxxxx)
+            templateId: ''     // EmailJS > Email Templates > Template ID (ex : template_xxxxx)
+        };
         // ==========================================================================
         const MAX_DOC_CHARS = 900000; // Firestore limite un document à 1 Mo : on garde de la marge
 
@@ -1270,9 +1281,18 @@
             return '';
         }
 
+        const hasShipping = () => typeof SHOP.shippingCost === 'number' && SHOP.shippingCost >= 0;
+        function shippingText() {
+            return hasShipping()
+                ? `+ ${formatPrice(SHOP.shippingCost)} de frais de port (${SHOP.shippingLabel})`
+                : `+ frais de port (${SHOP.shippingLabel}), montant confirmé par e-mail avant paiement`;
+        }
+        function totalText(price) {
+            return hasShipping() ? formatPrice((Number(price) || 0) + SHOP.shippingCost) : formatPrice(price) + ' + frais de port';
+        }
         function formatPrice(p) {
             const n = Number(p);
-            return Number.isFinite(n) ? n.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' €' : '— €';
+            return Number.isFinite(n) ? n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }) + ' €' : '— €';
         }
 
         function toMillis(ts) {
@@ -1620,7 +1640,9 @@
 Merci pour votre commande ! Voici sa confirmation :
 
 - Article : ${item.title} (${item.meta})
-- Prix TTC : ${formatPrice(item.price)} — ${SHOP.shippingNote}
+- Prix TTC : ${formatPrice(item.price)}
+- Frais de port (${SHOP.shippingLabel}) : ${hasShipping() ? formatPrice(SHOP.shippingCost) : '[MONTANT À INDIQUER]'}
+- TOTAL À RÉGLER : ${hasShipping() ? totalText(item.price) : '[TOTAL À INDIQUER]'}
 - Référence de commande : ${order.ref}
 - Adresse de livraison :
 ${order.address}
@@ -1631,7 +1653,7 @@ IBAN : ${SHOP.iban}
 BIC : ${SHOP.bic}
 Référence à indiquer : ${order.ref}
 
-La flûte sera expédiée en colis suivi dès réception du virement.
+La flûte sera expédiée en Colissimo avec suivi dès réception du virement.
 
 Droit de rétractation : vous disposez de 14 jours à compter de la réception pour vous rétracter (hors pièces sur-mesure), via le lien « Renoncer au contrat ici » en bas du site ou en répondant à cet e-mail. Conditions générales de vente : ${site}#cgv
 
@@ -1733,7 +1755,7 @@ L'or et l'âme du bois`;
             document.getElementById('orderTitle').textContent = item.title || 'Flûte de style amérindien';
             document.getElementById('orderMeta').textContent = item.meta || '';
             document.getElementById('orderPrice').textContent = formatPrice(item.price);
-            document.getElementById('orderShipping').textContent = SHOP.shippingNote;
+            document.getElementById('orderShipping').textContent = shippingText() + (hasShipping() ? ` — Total : ${totalText(item.price)}` : '');
             document.getElementById('orderVat').textContent = SHOP.vatNote;
             document.getElementById('orderError').classList.add('hidden');
             document.getElementById('orderStep1').classList.remove('hidden');
@@ -1800,6 +1822,9 @@ L'or et l'âme du bois`;
                 'Référence': ref,
                 'Flûte': `${item.title} (${item.meta})`,
                 'Prix': formatPrice(item.price),
+                'Frais de port': hasShipping() ? formatPrice(SHOP.shippingCost) + ' (' + SHOP.shippingLabel + ')' : 'À communiquer au client (' + SHOP.shippingLabel + ')',
+                'Total à virer': totalText(item.price),
+                'Confirmation client': (EMAILJS.publicKey ? 'envoyée automatiquement' : "à envoyer (bouton ✉️ dans l'espace admin)"),
                 'Client': name,
                 'E-mail': email,
                 'Téléphone': phone || '—',
@@ -1808,9 +1833,32 @@ L'or et l'âme du bois`;
                 'Réservée jusqu\'au': deadline
             }).catch(err => console.error(err));
 
+            // Confirmation de commande envoyée automatiquement au client
+            const mailState = document.getElementById('okMailState');
+            mailState.textContent = 'vous sera envoyée';
+            if (EMAILJS.publicKey && EMAILJS.serviceId && EMAILJS.templateId && window.emailjs) {
+                const site = location.origin + '/';
+                window.emailjs.send(EMAILJS.serviceId, EMAILJS.templateId, {
+                    to_email: email, to_name: name, ref,
+                    flute: `${item.title} (${item.meta})`,
+                    prix: formatPrice(item.price),
+                    port: hasShipping() ? formatPrice(SHOP.shippingCost) : 'communiqué par e-mail sous 24 h',
+                    total: totalText(item.price),
+                    transporteur: SHOP.shippingLabel,
+                    adresse: address,
+                    date_limite: deadline,
+                    beneficiaire: SHOP.beneficiary, iban: SHOP.iban, bic: SHOP.bic,
+                    site_url: site, cgv_url: site + '#cgv',
+                    vendeur_email: SHOP.email
+                }, { publicKey: EMAILJS.publicKey })
+                    .then(() => { mailState.textContent = 'vient de vous être envoyée'; })
+                    .catch(err => console.error('EmailJS', err));
+            }
+
             document.getElementById('okTitle').textContent = item.title;
             document.getElementById('okDeadline').textContent = deadline;
-            document.getElementById('okAmount').textContent = formatPrice(item.price);
+            document.getElementById('okAmount').textContent = totalText(item.price);
+            document.getElementById('okShippingWait').classList.toggle('hidden', hasShipping());
             document.getElementById('okBeneficiary').textContent = SHOP.beneficiary;
             document.getElementById('okIban').textContent = SHOP.iban;
             document.getElementById('okBic').textContent = SHOP.bic;
