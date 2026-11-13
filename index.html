@@ -13,31 +13,9 @@
     <meta property="og:url" content="https://loramedubois.fr/">
     <meta property="og:locale" content="fr_FR">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%235a3b2b'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='%23fcd34d'%3E%E2%99%AA%3C/text%3E%3C/svg%3E">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        wood: {
-                            50: '#fdfbf7', 100: '#f7f2e8', 200: '#eee2cd', 300: '#dfcaaa', 
-                            400: '#ccaa7f', 500: '#ba8a58', 600: '#a37143', 700: '#845737', 
-                            800: '#6d4531', 900: '#5a3b2b', 950: '#321d15',
-                        },
-                        amberGold: '#d97706',
-                    },
-                    fontFamily: {
-                        serif: ['Playfair Display', 'serif'],
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Style et polices hébergés sur le site (aucun appel à Google Fonts ni au CDN Tailwind) -->
+    <link rel="stylesheet" href="assets/fonts.css">
+    <link rel="stylesheet" href="assets/site.css">
     <style>
         body { background-color: #1a1412; color: #f7f2e8; font-family: 'Inter', sans-serif; }
         .serif-title { font-family: 'Playfair Display', serif; }
@@ -161,7 +139,7 @@
     <main class="pt-20">
         <!-- Hero Section -->
         <section id="accueil" data-page="accueil" class="relative min-h-[78vh] flex flex-col items-center justify-center overflow-hidden pt-24 pb-16 px-4">
-            <div class="absolute inset-0 z-0 opacity-25 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1511497584788-8767611136f6?auto=format&fit=crop&w=1600&q=80');"></div>
+            <div class="absolute inset-0 z-0 opacity-25 bg-cover bg-center" style="background-image: url('atelier_et_planches.jpg');"></div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#181311]/60 via-[#181311]/90 to-[#181311] z-0"></div>
 
             <div class="relative z-10 max-w-4xl mx-auto text-center space-y-6">
@@ -1174,7 +1152,7 @@
     </footer>
 
     <!-- EmailJS : envoi de l'e-mail de confirmation au client -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="assets/emailjs.min.js"></script>
 
     <!-- Routeur : une section = une page -->
     <script>
@@ -1237,7 +1215,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const FALLBACK_IMG = 'https://images.unsplash.com/photo-1511497584788-8767611136f6?auto=format&fit=crop&w=600&q=80';
+        const FALLBACK_IMG = 'atelier_et_planches.jpg';
         const MAX_PHOTOS = 3;
 
         // ====== RÉGLAGES DE LA BOUTIQUE : à compléter avant la mise en ligne ======
