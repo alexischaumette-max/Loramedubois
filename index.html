@@ -874,6 +874,7 @@
                         <span id="orderPrice" class="serif-title text-2xl font-bold text-amber-400">0 €</span>
                     </div>
                     <p id="orderShipping" class="text-[11px] text-wood-400"></p>
+                    <p class="text-[10px] text-wood-500">Envoi assuré ou hors France métropolitaine : <a href="#contact" onclick="closeModal('orderModal')" class="underline hover:text-amber-300">contactez l'artisan</a> (06 72 29 01 05 / loramedubois@gmail.com).</p>
                     <p id="orderVat" class="text-[10px] text-wood-500"></p>
                 </div>
                 <div class="text-[11px] text-wood-300 leading-relaxed bg-amber-500/5 border border-amber-500/20 rounded-xl p-3 space-y-1">
@@ -1094,7 +1095,7 @@
 
                 <p><strong class="text-wood-100">2. Produits.</strong> Les flûtes sont des pièces uniques fabriquées à la main ; leurs caractéristiques essentielles (essence, tonalité, accordage, dimensions) figurent sur leur fiche. Le veinage et la teinte du bois peuvent varier légèrement par rapport aux photos. Les pièces sur-mesure font l'objet d'un devis préalable par e-mail.</p>
 
-                <p><strong class="text-wood-100">3. Prix et frais de livraison.</strong> Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, article 293 B du CGI. Les frais de livraison s'ajoutent au prix de la flûte : envoi en Colissimo avec suivi ; leur montant est indiqué au client lors de la commande, avant tout paiement. Livraison hors France métropolitaine : sur devis préalable.</p>
+                <p><strong class="text-wood-100">3. Prix et frais de livraison.</strong> Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, article 293 B du CGI. Les frais de livraison s'ajoutent au prix de la flûte : forfait de 11,20 € TTC pour un envoi en Colissimo avec suivi, sans assurance, en France métropolitaine. Ils sont indiqués au client lors de la commande, avant tout paiement. Pour un envoi assuré ou une livraison hors France métropolitaine, contactez l'artisan par téléphone ou par e-mail avant de commander.</p>
 
                 <p><strong class="text-wood-100">4. Commande.</strong> Le client remplit le formulaire de commande, accepte les CGV, puis valide en cliquant sur « Commander avec obligation de paiement ». Le contrat est alors conclu. Une confirmation reprenant le détail de la commande est adressée au client par e-mail.</p>
 
@@ -1245,8 +1246,8 @@
             bic: 'CRLYFRPP',                                       // ton BIC
             email: 'loramedubois@gmail.com',
             reservationHours: 96,                                  // durée de réservation : 4 jours
-            shippingCost: null,                                    // FORFAIT de port en euros, ex : 12.5  (null = montant communiqué par e-mail)
-            shippingLabel: 'Colissimo avec suivi',
+            shippingCost: 11.2,                                    // FORFAIT de port en euros, ex : 12.5  (null = montant communiqué par e-mail)
+            shippingLabel: 'Colissimo avec suivi, sans assurance',
             vatNote: 'TVA non applicable, art. 293 B du CGI.'
         };
         const WEB3FORMS_KEY = 'c9048a4f-7cfb-4966-b66c-99081a713b60';
