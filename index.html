@@ -49,6 +49,46 @@
         .draggable-card { cursor: grab; }
         .draggable-card:active { cursor: grabbing; }
         .dragging { opacity: 0.4; }
+
+        /* ===== Navigation par pages ===== */
+        .page-off { display: none !important; }
+        [data-page] { border-top: 0 !important; }
+        .page-in { animation: pageIn .45s cubic-bezier(.2,.7,.2,1) both; }
+        @keyframes pageIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+        /* Fond plus vivant : halos ambrés discrets */
+        body {
+            background:
+                radial-gradient(900px 500px at 85% -10%, rgba(217,119,6,.13), transparent 60%),
+                radial-gradient(700px 500px at -10% 30%, rgba(163,113,67,.12), transparent 60%),
+                #181311;
+            background-attachment: fixed;
+        }
+
+        /* Liens du menu : pastille active */
+        .nav-link { position: relative; padding: .45rem .8rem; border-radius: 999px; transition: all .2s; }
+        .nav-link:hover { color: #fcd34d; background: rgba(90,59,43,.35); }
+        .nav-link.is-active { color: #1a1412; background: linear-gradient(135deg,#fcd34d,#d97706); font-weight: 600; box-shadow: 0 6px 20px -6px rgba(217,119,6,.7); }
+
+        /* Barre d'onglets mobile */
+        .tab-link { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: #ccaa7f; padding: 6px 0; border-radius: 14px; transition: all .2s; }
+        .tab-link svg { width: 22px; height: 22px; transition: transform .2s; }
+        .tab-link.is-active { color: #fcd34d; }
+        .tab-link.is-active svg { transform: translateY(-2px) scale(1.12); filter: drop-shadow(0 4px 8px rgba(217,119,6,.6)); }
+
+        /* Sous-menu "Découvrir" */
+        .sub-link { white-space: nowrap; padding: .5rem 1rem; border-radius: 999px; font-size: 12px; border: 1px solid rgba(132,87,55,.5); color: #dfcaaa; transition: all .2s; }
+        .sub-link:hover { border-color: #f59e0b; color: #fcd34d; }
+        .sub-link.is-active { background: #f59e0b; border-color: #f59e0b; color: #1a1412; font-weight: 600; }
+
+        /* Cartes et boutons plus dynamiques */
+        #flutesGrid > div, .tile { transition: transform .25s, box-shadow .25s, border-color .25s; }
+        #flutesGrid > div:hover, .tile:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgba(217,119,6,.45); }
+        a.rounded-xl, button.rounded-xl { transition: transform .15s, box-shadow .2s, background .2s; }
+        a.rounded-xl:hover, button.rounded-xl:hover { transform: translateY(-1px); }
+        .glow { box-shadow: 0 10px 30px -10px rgba(245,158,11,.75); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        @media (max-width: 1023px) { body { padding-bottom: 76px; } }
         @media print {
             body * { visibility: hidden !important; }
             #orderModal, #orderModal * { visibility: visible !important; }
@@ -64,7 +104,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
             
             <!-- Logo & Marque -->
-            <a href="#" class="flex items-center gap-3 shrink-0 group">
+            <a href="#accueil" class="flex items-center gap-3 shrink-0 group">
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br from-wood-600 to-wood-900 flex items-center justify-center shadow-md border border-wood-500/30 group-hover:scale-105 transition duration-300">
                     <svg class="w-5 h-5 text-amber-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
@@ -79,48 +119,48 @@
                 </div>
             </a>
 
-            <!-- Menu de navigation -->
-            <nav class="hidden lg:flex items-center gap-5 xl:gap-7 text-xs font-medium text-wood-200/80 tracking-wide">
-                <a href="#histoire" class="hover:text-amber-400 transition">Histoire de flûtes</a>
-                <a href="#totems" class="hover:text-amber-400 transition">Totems</a>
-                <a href="#creations" class="hover:text-amber-400 transition">Guide & Choix</a>
-                <a href="#audio" class="hover:text-amber-400 transition">Audio</a>
-                <a href="#cours" class="hover:text-amber-400 transition">Cours & Apprentissage</a>
-                <a href="#catalogue" class="hover:text-amber-400 transition">Catalogue</a>
-                <a href="#artisan" class="hover:text-amber-400 transition">L'Artisan</a>
-                <a href="#avis" class="hover:text-amber-400 transition">Avis</a>
-                <a href="#contact" class="hover:text-amber-400 transition">Contact</a>
+            <!-- Menu de navigation (une page par onglet) -->
+            <nav class="hidden lg:flex items-center gap-1 text-[13px] font-medium text-wood-200/90">
+                <a href="#accueil" data-nav="accueil" class="nav-link">Accueil</a>
+                <a href="#catalogue" data-nav="catalogue" class="nav-link">Boutique</a>
+                <a href="#audio" data-nav="audio" class="nav-link">Écouter</a>
+                <a href="#histoire" data-nav="decouvrir" class="nav-link">Découvrir</a>
+                <a href="#artisan" data-nav="artisan" class="nav-link">L'atelier</a>
+                <a href="#avis" data-nav="avis" class="nav-link">Avis</a>
+                <a href="#contact" data-nav="contact" class="nav-link">Contact</a>
             </nav>
 
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="#catalogue" class="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold rounded-full bg-gradient-to-r from-wood-600 to-amber-700 hover:from-wood-500 hover:to-amber-600 text-white shadow-lg transition">
-                    Voir les modèles
-                </a>
-                <button id="burgerBtn" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav" class="lg:hidden p-2 rounded-lg border border-wood-700/60 text-wood-200 hover:text-amber-400 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </button>
-            </div>
+            <a href="#catalogue" class="hidden sm:inline-flex lg:hidden xl:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold rounded-full bg-gradient-to-r from-amber-500 to-amber-700 text-white glow shrink-0">
+                Voir les flûtes →
+            </a>
         </div>
-
-        <!-- Menu mobile -->
-        <nav id="mobileNav" class="hidden lg:hidden border-t border-wood-900/60 bg-[#181311]/95 px-4 py-3">
-            <div class="grid grid-cols-2 gap-1 text-sm text-wood-200">
-                <a href="#histoire" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Histoire de flûtes</a>
-                <a href="#totems" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Totems</a>
-                <a href="#creations" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Guide & Choix</a>
-                <a href="#audio" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Audio</a>
-                <a href="#cours" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Cours</a>
-                <a href="#catalogue" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Catalogue</a>
-                <a href="#artisan" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">L'Artisan</a>
-                <a href="#avis" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Avis</a>
-                <a href="#contact" class="py-2 px-2 rounded hover:bg-wood-900/60 hover:text-amber-400">Contact</a>
-            </div>
-        </nav>
     </header>
+
+    <!-- Barre d'onglets mobile -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#181311]/95 backdrop-blur-md border-t border-wood-800/60 px-2 pt-1 pb-[max(6px,env(safe-area-inset-bottom))]">
+        <div class="grid grid-cols-5 max-w-md mx-auto">
+            <a href="#accueil" data-nav="accueil" class="tab-link"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Accueil</a>
+            <a href="#catalogue" data-nav="catalogue" class="tab-link"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12l-1 13H7L6 7zm3 0a3 3 0 016 0"/></svg>Boutique</a>
+            <a href="#audio" data-nav="audio" class="tab-link"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 14v-2a8 8 0 0116 0v2M4 14v4a2 2 0 002 2h1v-7H6a2 2 0 00-2 2zm16 0v4a2 2 0 01-2 2h-1v-7h1a2 2 0 012 2z"/></svg>Écouter</a>
+            <a href="#histoire" data-nav="decouvrir" class="tab-link"><svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M15.5 8.5l-2 5-5 2 2-5z"/></svg>Découvrir</a>
+            <button id="burgerBtn" type="button" aria-label="Plus de pages" aria-expanded="false" aria-controls="mobileNav" class="tab-link"><svg fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>Plus</button>
+        </div>
+    </nav>
+
+    <!-- Menu "•••" (s'ouvre au-dessus de la barre d'onglets) -->
+    <nav id="mobileNav" class="hidden lg:hidden fixed left-3 right-3 bottom-[84px] z-40 rounded-2xl bg-[#221a16] border border-wood-700/60 shadow-2xl p-2 page-in">
+        <a href="#artisan" data-nav="artisan" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-wood-900/70 text-wood-100"><span class="text-lg">🪵</span> L'atelier &amp; l'artisan</a>
+        <a href="#avis" data-nav="avis" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-wood-900/70 text-wood-100"><span class="text-lg">⭐</span> Avis clients</a>
+        <a href="#contact" data-nav="contact" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-wood-900/70 text-wood-100"><span class="text-lg">✉️</span> Contact &amp; sur-mesure</a>
+        <div class="border-t border-wood-800/60 mt-1 pt-1 grid grid-cols-2 text-[11px] text-wood-400">
+            <a href="#" data-legal="cgv" class="px-4 py-2 hover:text-amber-300">CGV</a>
+            <a href="#" data-legal="mentions" class="px-4 py-2 hover:text-amber-300">Mentions légales</a>
+        </div>
+    </nav>
 
     <main class="pt-20">
         <!-- Hero Section -->
-        <section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-16 px-4">
+        <section id="accueil" data-page="accueil" class="relative min-h-[78vh] flex flex-col items-center justify-center overflow-hidden pt-24 pb-16 px-4">
             <div class="absolute inset-0 z-0 opacity-25 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1511497584788-8767611136f6?auto=format&fit=crop&w=1600&q=80');"></div>
             <div class="absolute inset-0 bg-gradient-to-b from-[#181311]/60 via-[#181311]/90 to-[#181311] z-0"></div>
 
@@ -188,10 +228,48 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Tuiles : accès rapide aux pages -->
+            <div class="relative z-10 w-full max-w-5xl mx-auto mt-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <a href="#catalogue" class="tile group rounded-2xl p-5 bg-gradient-to-br from-amber-500/20 to-wood-900/40 border border-amber-500/30 hover:border-amber-400">
+                    <span class="text-2xl">🛍️</span>
+                    <p class="serif-title text-lg font-bold text-wood-100 mt-2">La boutique</p>
+                    <p class="text-[11px] text-wood-300 mt-1">Les flûtes disponibles, prêtes à partir.</p>
+                    <span class="text-amber-300 text-xs mt-3 inline-block group-hover:translate-x-1 transition">Voir →</span>
+                </a>
+                <a href="#audio" class="tile group rounded-2xl p-5 bg-wood-950/50 border border-wood-800/60 hover:border-amber-500/60">
+                    <span class="text-2xl">🎧</span>
+                    <p class="serif-title text-lg font-bold text-wood-100 mt-2">Écouter</p>
+                    <p class="text-[11px] text-wood-300 mt-1">Le son de chaque flûte, au naturel ou en réverbe.</p>
+                    <span class="text-amber-300 text-xs mt-3 inline-block group-hover:translate-x-1 transition">Écouter →</span>
+                </a>
+                <a href="#histoire" class="tile group rounded-2xl p-5 bg-wood-950/50 border border-wood-800/60 hover:border-amber-500/60">
+                    <span class="text-2xl">🧭</span>
+                    <p class="serif-title text-lg font-bold text-wood-100 mt-2">Découvrir</p>
+                    <p class="text-[11px] text-wood-300 mt-1">Histoire, totems, bien choisir, apprendre.</p>
+                    <span class="text-amber-300 text-xs mt-3 inline-block group-hover:translate-x-1 transition">Explorer →</span>
+                </a>
+                <a href="#contact" class="tile group rounded-2xl p-5 bg-wood-950/50 border border-wood-800/60 hover:border-amber-500/60">
+                    <span class="text-2xl">✨</span>
+                    <p class="serif-title text-lg font-bold text-wood-100 mt-2">Sur-mesure</p>
+                    <p class="text-[11px] text-wood-300 mt-1">Une essence, une tonalité, un totem rien qu'à vous.</p>
+                    <span class="text-amber-300 text-xs mt-3 inline-block group-hover:translate-x-1 transition">Demander →</span>
+                </a>
+            </div>
         </section>
 
+        <!-- Sous-menu de la rubrique "Découvrir" (visible sur ses 4 pages) -->
+        <div id="subnav" class="page-off sticky top-[60px] z-30 bg-[#181311]/90 backdrop-blur-md border-b border-wood-900/50">
+            <div class="max-w-5xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto no-scrollbar">
+                <a href="#histoire" data-sub="histoire" class="sub-link">📜 Histoire</a>
+                <a href="#totems" data-sub="totems" class="sub-link">🦅 Totems</a>
+                <a href="#creations" data-sub="creations" class="sub-link">🎵 Bien choisir</a>
+                <a href="#cours" data-sub="cours" class="sub-link">🎓 Apprendre</a>
+            </div>
+        </div>
+
         <!-- Section Histoire des Flûtes -->
-        <section id="histoire" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto border-t border-wood-900/50">
+        <section id="histoire" data-page="histoire" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto border-t border-wood-900/50">
             <div class="text-center space-y-3 mb-12">
                 <h2 class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Tradition & Origines</h2>
                 <h3 class="serif-title text-3xl sm:text-4xl font-bold text-wood-100">Un petit mot sur la flûte amérindienne</h3>
@@ -255,10 +333,11 @@
                     </div>
                 </div>
             </div>
+            <div class="flex justify-center pt-10 pb-4"><a href="#totems" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-wood-900/60 hover:bg-amber-600 border border-wood-700/60 hover:border-amber-500 text-wood-100 hover:text-white text-sm font-medium">Suite : Les totems <span class="group-hover:translate-x-1 transition">→</span></a></div>
         </section>
 
         <!-- Section Totems -->
-        <section id="totems" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto border-t border-wood-900/50">
+        <section id="totems" data-page="totems" class="py-20 px-4 sm:px-6 max-w-5xl mx-auto border-t border-wood-900/50">
             <div class="text-center space-y-3 mb-12">
                 <h2 class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Le Fétiche & Leurs Secrets</h2>
                 <h3 class="serif-title text-3xl sm:text-4xl font-bold text-wood-100">Le Bloc et les Totems</h3>
@@ -359,10 +438,11 @@
                     </div>
                 </div>
             </div>
+            <div class="flex justify-center pt-10 pb-4"><a href="#creations" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-wood-900/60 hover:bg-amber-600 border border-wood-700/60 hover:border-amber-500 text-wood-100 hover:text-white text-sm font-medium">Suite : Bien choisir sa flûte <span class="group-hover:translate-x-1 transition">→</span></a></div>
         </section>
 
         <!-- Section Guide & Mes Créations -->
-        <section id="creations" class="py-20 bg-[#181311] text-wood-100 border-t border-wood-900/50">
+        <section id="creations" data-page="creations" class="py-20 bg-[#181311] text-wood-100 border-t border-wood-900/50">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-16">
                 <div class="text-center max-w-3xl mx-auto space-y-4">
                     <span class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Guide & Personnalisation</span>
@@ -538,10 +618,11 @@
                     </p>
                 </div>
             </div>
+            <div class="flex justify-center pt-10 pb-4"><a href="#cours" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-wood-900/60 hover:bg-amber-600 border border-wood-700/60 hover:border-amber-500 text-wood-100 hover:text-white text-sm font-medium">Suite : Apprendre à jouer <span class="group-hover:translate-x-1 transition">→</span></a></div>
         </section>
 
         <!-- Section Audio / Extraits Sonores -->
-        <section id="audio" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
+        <section id="audio" data-page="audio" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
             <div class="text-center space-y-3 mb-12">
                 <h2 class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Immersion Sonore</h2>
                 <h3 class="serif-title text-3xl sm:text-4xl font-bold text-wood-100">Écoutez les Flûtes en Action</h3>
@@ -583,7 +664,7 @@
         </section>
 
         <!-- Nouvelle Section : Cours & Apprentissage (Entre Audio et Catalogue) -->
-        <section id="cours" class="py-20 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
+        <section id="cours" data-page="cours" class="py-20 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
             <div class="bg-wood-950/60 border border-wood-800/80 rounded-3xl p-8 sm:p-10 space-y-8 shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-amber-500/5 rounded-full blur-2xl pointer-events-none"></div>
 
@@ -625,10 +706,11 @@
                     </div>
                 </div>
             </div>
+            <div class="flex justify-center pt-10 pb-4"><a href="#catalogue" class="group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-wood-900/60 hover:bg-amber-600 border border-wood-700/60 hover:border-amber-500 text-wood-100 hover:text-white text-sm font-medium">Suite : Voir les flûtes disponibles <span class="group-hover:translate-x-1 transition">→</span></a></div>
         </section>
 
         <!-- Catalogue / Modèles Section -->
-        <section id="catalogue" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
+        <section id="catalogue" data-page="catalogue" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
             <div class="text-center space-y-3 mb-12">
                 <h2 class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Catalogue</h2>
                 <h3 class="serif-title text-3xl sm:text-4xl font-bold text-wood-100">Modèles Disponibles</h3>
@@ -657,7 +739,7 @@
         </section>
 
         <!-- Section Artisan -->
-        <section id="artisan" class="py-20 bg-gradient-to-b from-[#181311] via-wood-950/40 to-[#181311] border-t border-wood-900/50">
+        <section id="artisan" data-page="artisan" class="py-20 bg-gradient-to-b from-[#181311] via-wood-950/40 to-[#181311] border-t border-wood-900/50">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-12 items-center">
                 <div class="aspect-square rounded-2xl overflow-hidden bg-wood-900 border border-wood-700/50 relative shadow-2xl">
                     <img src="atelier_et_planches.jpg" alt="Atelier de lutherie et planches de bois brut" class="w-full h-full object-cover">
@@ -673,7 +755,7 @@
         </section>
 
         <!-- Avis Clients & Formulaire -->
-        <section id="avis" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
+        <section id="avis" data-page="avis" class="py-20 px-4 sm:px-6 max-w-6xl mx-auto border-t border-wood-900/50">
             <div class="text-center space-y-3 mb-12">
                 <h2 class="text-xs font-semibold tracking-widest text-amber-500 uppercase">Témoignages</h2>
                 <h3 class="serif-title text-3xl sm:text-4xl font-bold text-wood-100">Avis & Expériences</h3>
@@ -722,7 +804,7 @@
         </section>
 
         <!-- Contact Direct -->
-        <section id="contact" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
+        <section id="contact" data-page="contact" class="py-16 px-4 sm:px-6 max-w-4xl mx-auto border-t border-wood-900/50">
             <div class="bg-wood-900/30 border border-wood-800/80 rounded-2xl p-8 space-y-8">
                 <div class="text-center space-y-4">
                     <h3 class="serif-title text-2xl font-bold text-wood-100">Une question avant d'acheter ?</h3>
@@ -1087,6 +1169,47 @@
             </div>
         </div>
     </footer>
+
+    <!-- Routeur : une section = une page -->
+    <script>
+    (function () {
+        const DECOUVRIR = ['histoire', 'totems', 'creations', 'cours'];
+        const LEGAL = ['cgv', 'mentions', 'confidentialite'];
+        let current = null;
+
+        function route() {
+            let id = decodeURIComponent(location.hash.slice(1)) || 'accueil';
+            if (LEGAL.includes(id)) id = current || 'accueil';
+            const target = document.getElementById(id);
+            let page = target ? target.closest('[data-page]') : null;
+            if (!page) page = document.getElementById('accueil');
+            const pageId = page.dataset.page;
+
+            if (pageId !== current) {
+                document.querySelectorAll('[data-page]').forEach(p => p.classList.toggle('page-off', p !== page));
+                page.classList.remove('page-in'); void page.offsetWidth; page.classList.add('page-in');
+                current = pageId;
+            }
+            // Sous-menu "Découvrir"
+            const inDecouvrir = DECOUVRIR.includes(pageId);
+            document.getElementById('subnav').classList.toggle('page-off', !inDecouvrir);
+            document.querySelectorAll('[data-sub]').forEach(a => a.classList.toggle('is-active', a.dataset.sub === pageId));
+            // Onglet actif (menu haut, barre mobile, menu •••)
+            const navKey = inDecouvrir ? 'decouvrir' : pageId;
+            document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('is-active', a.dataset.nav === navKey));
+            const more = document.getElementById('burgerBtn');
+            if (more) more.classList.toggle('is-active', ['artisan', 'avis', 'contact'].includes(pageId));
+            // Titre de l'onglet du navigateur
+            const titles = { accueil: "L'or et l'âme du bois", catalogue: 'Boutique', audio: 'Écouter', histoire: 'Histoire', totems: 'Totems', creations: 'Bien choisir', cours: 'Apprendre', artisan: "L'atelier", avis: 'Avis', contact: 'Contact' };
+            document.title = (pageId === 'accueil' ? '' : titles[pageId] + ' · ') + "Flûtes artisanales de style amérindien | L'or et l'âme du bois";
+            // Haut de page (ou l'élément précis visé à l'intérieur de la page)
+            if (target && target !== page && !target.matches('[data-page]')) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            else window.scrollTo(0, 0);
+        }
+        window.addEventListener('hashchange', route);
+        document.addEventListener('DOMContentLoaded', route);
+    })();
+    </script>
 
     <!-- Script principal Firebase -->
     <script type="module">
