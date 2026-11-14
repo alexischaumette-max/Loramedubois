@@ -126,6 +126,7 @@
     </nav>
 
     <!-- Menu "•••" (s'ouvre au-dessus de la barre d'onglets) -->
+    <div id="moreBackdrop" class="hidden lg:hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px]" aria-hidden="true"></div>
     <nav id="mobileNav" class="hidden lg:hidden fixed left-3 right-3 bottom-[84px] z-40 rounded-2xl bg-[#221a16] border border-wood-700/60 shadow-2xl p-2 page-in">
         <a href="#artisan" data-nav="artisan" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-wood-900/70 text-wood-100"><span class="text-lg">🪵</span> L'atelier &amp; l'artisan</a>
         <a href="#avis" data-nav="avis" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-wood-900/70 text-wood-100"><span class="text-lg">⭐</span> Avis clients</a>
@@ -1433,14 +1434,24 @@
         // ---------- Menu mobile ----------
         const burgerBtn = document.getElementById('burgerBtn');
         const mobileNav = document.getElementById('mobileNav');
-        burgerBtn.addEventListener('click', () => {
-            const open = mobileNav.classList.toggle('hidden') === false;
+        const moreBackdrop = document.getElementById('moreBackdrop');
+        function setMoreMenu(open) {
+            mobileNav.classList.toggle('hidden', !open);
+            moreBackdrop.classList.toggle('hidden', !open);
             burgerBtn.setAttribute('aria-expanded', String(open));
+        }
+        burgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setMoreMenu(mobileNav.classList.contains('hidden'));
         });
-        mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-            mobileNav.classList.add('hidden');
-            burgerBtn.setAttribute('aria-expanded', 'false');
-        }));
+        // Fermeture : appui sur le voile, sur un lien du menu, n'importe où ailleurs, touche Échap ou changement de page
+        moreBackdrop.addEventListener('click', () => setMoreMenu(false));
+        mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMoreMenu(false)));
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.classList.contains('hidden') && !mobileNav.contains(e.target) && !burgerBtn.contains(e.target)) setMoreMenu(false);
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMoreMenu(false); });
+        window.addEventListener('hashchange', () => setMoreMenu(false));
 
         // ---------- Pages légales ----------
         function openLegal(tab) {
