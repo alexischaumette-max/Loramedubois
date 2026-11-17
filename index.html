@@ -723,6 +723,42 @@
                     </p>
                 </div>
             </div>
+            <!-- Galerie : la fabrication en images -->
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 mt-14">
+                <div class="flex items-end justify-between gap-4 mb-4">
+                    <div>
+                        <span class="text-xs font-semibold tracking-widest text-amber-500 uppercase">À l'atelier</span>
+                        <h4 class="serif-title text-2xl font-bold text-wood-100">La fabrication, étape par étape</h4>
+                    </div>
+                    <span class="text-[11px] text-wood-500 hidden sm:block">Touchez une photo pour l'agrandir</span>
+                </div>
+                <div id="atelierGallery" class="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3">
+                    <button type="button" data-lightbox="0" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-1-mini.jpg" alt="Les deux moitiés du corps, creusées avant collage" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">Les deux moitiés du corps, creusées avant collage</span>
+                    </button>
+                    <button type="button" data-lightbox="1" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-2-mini.jpg" alt="Le canal intérieur, poncé à la main" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">Le canal intérieur, poncé à la main</span>
+                    </button>
+                    <button type="button" data-lightbox="2" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-3-mini.jpg" alt="Les ébauches collées, prêtes à être façonnées" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">Les ébauches collées, prêtes à être façonnées</span>
+                    </button>
+                    <button type="button" data-lightbox="3" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-4-mini.jpg" alt="Mise en place sur le tour" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">Mise en place sur le tour</span>
+                    </button>
+                    <button type="button" data-lightbox="4" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-5-mini.jpg" alt="Tournage du corps de la flûte" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">Tournage du corps de la flûte</span>
+                    </button>
+                    <button type="button" data-lightbox="5" class="group relative aspect-[4/3] rounded-xl overflow-hidden border border-wood-800/60 hover:border-amber-500/60 transition">
+                        <img src="assets/atelier/atelier-6-mini.jpg" alt="De l'ébauche brute à la flûte façonnée" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute inset-x-0 bottom-0 p-2 text-[10px] sm:text-[11px] text-left text-wood-100 bg-gradient-to-t from-black/80 to-transparent">De l'ébauche brute à la flûte façonnée</span>
+                    </button>
+                </div>
+            </div>
         </section>
 
         <!-- Avis Clients & Formulaire -->
@@ -1285,6 +1321,44 @@
     })();
     </script>
 
+
+    <!-- Visionneuse photos de l'atelier -->
+    <div id="lightbox" class="hidden fixed inset-0 z-[60] bg-black/95 flex flex-col items-center justify-center p-3" role="dialog" aria-modal="true">
+        <button type="button" data-lb-close class="absolute top-3 right-3 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-xl" aria-label="Fermer">✕</button>
+        <button type="button" data-lb-prev class="absolute left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl" aria-label="Photo précédente">‹</button>
+        <button type="button" data-lb-next class="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 text-white text-2xl" aria-label="Photo suivante">›</button>
+        <img id="lbImg" src="" alt="" class="max-w-full max-h-[80vh] rounded-lg object-contain">
+        <p id="lbCaption" class="mt-3 text-sm text-wood-200 text-center"></p>
+        <p id="lbCount" class="text-[11px] text-wood-500"></p>
+    </div>
+    <script>
+    (function () {
+        const PHOTOS = [["Les deux moitiés du corps, creusées avant collage", "atelier-1"], ["Le canal intérieur, poncé à la main", "atelier-2"], ["Les ébauches collées, prêtes à être façonnées", "atelier-3"], ["Mise en place sur le tour", "atelier-4"], ["Tournage du corps de la flûte", "atelier-5"], ["De l'ébauche brute à la flûte façonnée", "atelier-6"]];
+        const box = document.getElementById('lightbox'), img = document.getElementById('lbImg');
+        let i = 0;
+        const show = k => {
+            i = (k + PHOTOS.length) % PHOTOS.length;
+            img.src = 'assets/atelier/' + PHOTOS[i][1] + '.jpg'; img.alt = PHOTOS[i][0];
+            document.getElementById('lbCaption').textContent = PHOTOS[i][0];
+            document.getElementById('lbCount').textContent = (i + 1) + ' / ' + PHOTOS.length;
+        };
+        const open = k => { show(k); box.classList.remove('hidden'); document.body.style.overflow = 'hidden'; };
+        const close = () => { box.classList.add('hidden'); document.body.style.overflow = ''; };
+        document.querySelectorAll('[data-lightbox]').forEach(b => b.addEventListener('click', () => open(Number(b.dataset.lightbox))));
+        box.querySelector('[data-lb-close]').addEventListener('click', close);
+        box.querySelector('[data-lb-prev]').addEventListener('click', e => { e.stopPropagation(); show(i - 1); });
+        box.querySelector('[data-lb-next]').addEventListener('click', e => { e.stopPropagation(); show(i + 1); });
+        box.addEventListener('click', e => { if (e.target === box) close(); });
+        document.addEventListener('keydown', e => {
+            if (box.classList.contains('hidden')) return;
+            if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(i - 1); if (e.key === 'ArrowRight') show(i + 1);
+        });
+        let x0 = null;
+        box.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; }, { passive: true });
+        box.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1)); x0 = null; }, { passive: true });
+        window.addEventListener('hashchange', close);
+    })();
+    </script>
     <!-- Routeur : une section = une page -->
     <script>
     (function () {
@@ -1644,7 +1718,7 @@
                 const pendingOrder = currentUser ? pendingOrderByFlute.get(id) : null;
 
                 const badge = status === 'sold'
-                    ? '<span class="absolute top-3 right-3 bg-emerald-800/95 text-emerald-50 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md shadow-lg">Vendue · commande possible</span>'
+                    ? '<span class="absolute top-3 right-3 bg-emerald-800/95 text-emerald-50 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md shadow-lg">Rupture · commande possible</span>'
                     : status === 'reserved'
                         ? '<span class="absolute top-3 right-3 bg-amber-700/90 text-amber-50 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">Réservée</span>'
                         : '';
@@ -1653,7 +1727,7 @@
                     ? `<button type="button" data-order class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs shadow transition">Commander</button>`
                     : status === 'reserved'
                         ? `<span class="px-4 py-2.5 rounded-xl bg-wood-900 text-wood-400 text-xs">Réservée</span>`
-                        : `<button type="button" data-similar class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-medium text-xs shadow transition">Commander la même</button>`;
+                        : `<button type="button" data-similar class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-medium text-xs shadow transition">Commander</button>`;
 
                 let adminBlock = '';
                 if (currentUser) {
