@@ -1111,7 +1111,7 @@
 
                 <p><strong class="text-wood-100">1. Vendeur et champ d'application.</strong> Les présentes conditions régissent les ventes conclues sur ce site entre le vendeur identifié dans les mentions légales et tout consommateur. Le fait de passer commande vaut acceptation des présentes CGV.</p>
 
-                <p><strong class="text-wood-100">2. Produits.</strong> Les flûtes sont des pièces uniques fabriquées à la main ; leurs caractéristiques essentielles (essence, tonalité, accordage, dimensions) figurent sur leur fiche. Le veinage et la teinte du bois peuvent varier légèrement par rapport aux photos. Les pièces sur-mesure font l'objet d'un devis préalable par e-mail.</p>
+                <p><strong class="text-wood-100">2. Produits.</strong> Les flûtes sont des pièces uniques fabriquées à la main ; leurs caractéristiques essentielles (essence, tonalité, accordage, dimensions) figurent sur leur fiche. Le veinage et la teinte du bois peuvent varier légèrement par rapport aux photos. Les pièces sur-mesure font l'objet d'un devis préalable par e-mail. Pour un modèle affiché « Rupture · commande possible », les photos sont celles de la pièce déjà vendue et n'ont qu'une valeur d'illustration : la nouvelle flûte, fabriquée sur le même modèle, fait l'objet d'un devis précisant ses caractéristiques et peut présenter des différences d'aspect propres au bois et au travail fait main.</p>
 
                 <p><strong class="text-wood-100">3. Prix et frais de livraison.</strong> Les prix sont indiqués en euros toutes taxes comprises. TVA non applicable, article 293 B du CGI. Les frais de livraison s'ajoutent au prix de la flûte : forfait de 11,20 € TTC pour un envoi en Colissimo avec suivi, sans assurance, en France métropolitaine. Ils sont indiqués au client lors de la commande, avant tout paiement. Pour un envoi assuré ou une livraison hors France métropolitaine, contactez l'artisan par téléphone ou par e-mail avant de commander.</p>
 
@@ -1773,6 +1773,7 @@
                         <div>
                             <h4 class="serif-title text-xl font-bold text-wood-100">${esc(item.title)}</h4>
                             <p class="text-xs text-wood-400 mt-2 leading-relaxed whitespace-pre-line">${esc(item.desc)}</p>
+                            ${status === 'sold' ? `<p class="mt-3 text-[11px] leading-snug text-emerald-200/90 bg-emerald-900/25 border border-emerald-700/40 rounded-lg px-2.5 py-2">📷 Les photos montrent la flûte déjà vendue et sont données à titre d'exemple. Chaque pièce étant faite main, celle réalisée pour vous sera du même modèle, mais unique : veinage, teinte et petits détails peuvent varier.</p>` : ''}
                         </div>
                         <div class="pt-2 flex items-center justify-between border-t border-wood-900">
                             <div>
