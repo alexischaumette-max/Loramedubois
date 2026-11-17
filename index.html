@@ -1644,7 +1644,7 @@
                 const pendingOrder = currentUser ? pendingOrderByFlute.get(id) : null;
 
                 const badge = status === 'sold'
-                    ? '<span class="absolute top-3 right-3 bg-rose-900/90 text-rose-100 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">Vendue</span>'
+                    ? '<span class="absolute top-3 right-3 bg-emerald-800/95 text-emerald-50 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md shadow-lg">Vendue · commande possible</span>'
                     : status === 'reserved'
                         ? '<span class="absolute top-3 right-3 bg-amber-700/90 text-amber-50 text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md">Réservée</span>'
                         : '';
@@ -1653,7 +1653,7 @@
                     ? `<button type="button" data-order class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs shadow transition">Commander</button>`
                     : status === 'reserved'
                         ? `<span class="px-4 py-2.5 rounded-xl bg-wood-900 text-wood-400 text-xs">Réservée</span>`
-                        : `<a href="#contact" class="px-4 py-2.5 rounded-xl bg-wood-900 hover:bg-wood-800 text-wood-300 text-xs">Une flûte similaire ?</a>`;
+                        : `<button type="button" data-similar class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-medium text-xs shadow transition">Commander la même</button>`;
 
                 let adminBlock = '';
                 if (currentUser) {
@@ -1682,7 +1682,7 @@
                 }
 
                 const card = document.createElement('div');
-                card.className = `bg-wood-950/60 border border-wood-800/60 rounded-2xl overflow-hidden hover:border-wood-600/80 transition duration-300 flex flex-col group ${status === 'sold' ? 'opacity-70' : ''}`;
+                card.className = `bg-wood-950/60 border border-wood-800/60 rounded-2xl overflow-hidden hover:border-wood-600/80 transition duration-300 flex flex-col group`;
                 card.innerHTML = `
                     <div class="relative h-64 bg-wood-900 overflow-hidden">
                         <img src="${esc(mainImg)}" alt="${esc(item.title)}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -1702,8 +1702,8 @@
                         </div>
                         <div class="pt-2 flex items-center justify-between border-t border-wood-900">
                             <div>
-                                <span class="block text-[10px] text-wood-400 uppercase">Prix TTC</span>
-                                <span class="serif-title text-2xl font-bold ${status === 'sold' ? 'text-wood-500 line-through' : 'text-amber-400'}">${esc(formatPrice(item.price))}</span>
+                                <span class="block text-[10px] text-wood-400 uppercase">${status === 'sold' ? 'Prix indicatif' : 'Prix TTC'}</span>
+                                <span class="serif-title text-2xl font-bold text-amber-400">${esc(formatPrice(item.price))}</span>
                             </div>
                             ${action}
                         </div>
@@ -1739,6 +1739,13 @@
                     }, { passive: true });
                 }
                 card.querySelector('[data-order]')?.addEventListener('click', () => openOrder(id));
+                // Flûte vendue : demande de fabrication d'une flûte identique via le formulaire de contact
+                card.querySelector('[data-similar]')?.addEventListener('click', () => {
+                    const msg = document.getElementById('contactMessage');
+                    if (msg) msg.value = `Bonjour, je souhaiterais commander une flûte identique (ou très proche) au modèle « ${item.title} »${item.meta ? ' (' + item.meta + ')' : ''}, vu sur le site au prix indicatif de ${formatPrice(item.price)}. Pouvez-vous m'indiquer le délai de fabrication ? Merci !`;
+                    location.hash = '#contact';
+                    setTimeout(() => document.getElementById('contactName')?.focus(), 400);
+                });
                 card.querySelector('[data-edit]')?.addEventListener('click', () => editProduct(id));
                 card.querySelector('[data-delete]')?.addEventListener('click', () => deleteProduct(id));
                 card.querySelector('[data-mail]')?.addEventListener('click', () => openConfirmationEmail(id, pendingOrder));
